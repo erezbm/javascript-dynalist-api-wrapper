@@ -1,0 +1,51 @@
+{
+  "name": "dynalist.js",
+  "version": "1.0.0",
+  "description": "A JavaScript Dynalist API wrapper",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "npx jest"
+  },
+  "files": [
+    "lib/"
+  ],
+  "author": "Erez Ben Moshe",
+  "license": "MIT",
+  "homepage": "https://github.com/erezbm/dynalist.js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erezbm/dynalist.js.git"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-plugin-import": "^2.22.0",
+    "jest": "^26.5.3",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": "airbnb-typescript/base",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    }
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/test/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ]
+  }
+}

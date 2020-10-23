@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
+    "prebuild": "rimraf lib/*",
     "build": "tsc",
     "test": "npx jest"
   },
@@ -18,14 +19,19 @@
     "type": "git",
     "url": "git+https://github.com/erezbm/dynalist.js.git"
   },
+  "dependencies": {
+    "cross-fetch": "^3.0.6"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
+    "dotenv": "^8.2.0",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-plugin-import": "^2.22.0",
     "jest": "^26.5.3",
+    "rimraf": "^3.0.2",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
   },

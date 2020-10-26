@@ -1,29 +1,34 @@
-import APIError from './APIError';
-import { FILE_LIST_URL } from './constants/api';
+import fetch from 'cross-fetch';
+import Endpoint from './Endpoint';
+import endpointToUrl from './endpointToUrl';
+import type * as P from './types/request-parameters';
+import type * as R from './types/responses';
 
 export default class Client {
   constructor(private token: string) { }
 
-  public async listDocumentsAndFolders() {
-    return this.requestEndpoint(FILE_LIST_URL);
+  listDocumentsAndFolders() {
+    return this.requestEndpoint(Endpoint.FileList);
   }
 
-  private async requestEndpoint(endpoint: URL, requestData?: object) {
-    const response = await fetch(endpoint.href, {
+  private requestEndpoint(endpoint: Endpoint.FileList): Promise<R.FileListResponse>;
+  private requestEndpoint(endpoint: Endpoint.FileEdit, parameters: P.FileEditRequestParameters): Promise<R.FileEditResponse>;
+  private requestEndpoint(endpoint: Endpoint.DocRead, parameters: P.DocReadRequestParameters): Promise<R.DocReadResponse>;
+  private requestEndpoint(endpoint: Endpoint.DocCheckForUpdates, parameters: P.DocCheckForUpdatesRequestParameters): Promise<R.DocCheckForUpdatesResponse>;
+  private requestEndpoint(endpoint: Endpoint.DocEdit, parameters: P.DocEditRequestParameters): Promise<R.DocEditResponse>;
+  private requestEndpoint(endpoint: Endpoint.InboxAdd, parameters: P.InboxAddRequestParameters): Promise<R.InboxAddResponse>;
+  private requestEndpoint(endpoint: Endpoint.Upload, parameters: P.UploadRequestParameters): Promise<R.UploadResponse>;
+  private requestEndpoint(endpoint: Endpoint.PrefGet, parameters: P.PrefGetRequestParameters): Promise<R.PrefGetResponse>;
+  private requestEndpoint(endpoint: Endpoint.PrefSet, parameters: P.PrefSetRequestParameters): Promise<R.PrefSetResponse>;
+  private async requestEndpoint(endpoint: Endpoint, parameters?: object) {
+    const response = await fetch(endpointToUrl[endpoint].href, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         token: this.token,
-        ...requestData,
+        ...parameters,
       }),
     });
-    const responseData = await response.json();
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const { _code, _msg } = responseData;
-    if (!_code) throw new Error("Missing field '_code'");
-    if (_code !== 'OK') throw new APIError(_code, _msg);
-
-    return responseData;
+    return response.json();
   }
 }

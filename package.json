@@ -7,7 +7,8 @@
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc",
-    "test": "npx jest"
+    "test": "npx jest",
+    "prepublishOnly": "npm test && npm run build"
   },
   "files": [
     "lib/"
@@ -44,13 +45,16 @@
     "extends": "airbnb-typescript/base",
     "parserOptions": {
       "project": "./tsconfig.eslint.json"
+    },
+    "rules": {
+      "max-len": "off",
+      "no-underscore-dangle": "off"
     }
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [
-      "**/test/**/*.[jt]s?(x)",
       "**/?(*.)+(spec|test).[jt]s?(x)"
     ]
   }

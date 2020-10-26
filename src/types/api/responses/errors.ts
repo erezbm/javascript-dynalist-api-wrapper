@@ -1,7 +1,6 @@
-type ErrorResponse<T> = {
-  _code: T;
-  _msg?: string;
-};
+import ResponseCode from './ResponseCode';
+
+type ErrorResponse<T> = ResponseCode<T> & { _msg?: string; };
 
 export type InvalidErrorResponse = ErrorResponse<'Invalid'>;
 export type InvalidTokenErrorResponse = ErrorResponse<'InvalidToken'>;

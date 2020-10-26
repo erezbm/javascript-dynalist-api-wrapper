@@ -1,14 +1,41 @@
 import fetch from 'cross-fetch';
 import Endpoint from './Endpoint';
 import endpointToUrl from './endpointToUrl';
-import type * as P from './types/request-parameters';
-import type * as R from './types/responses';
+import * as C from './types/api/file-level/changes';
+import * as P from './types/api/request-parameters';
+import * as R from './types/api/responses';
+import * as Cl from './types/client';
 
 export default class Client {
+  /** @param token Your API secret token. */
   constructor(private token: string) { }
 
+  /** Lists all your documents and folders. */
   listDocumentsAndFolders() {
     return this.requestEndpoint(Endpoint.FileList);
+  }
+
+  /** Changes specific documents and folders. */
+  changeDocumentsAndFolders(changes: C.FileLevelChange[]) {
+    return this.requestEndpoint(Endpoint.FileEdit, { changes });
+  }
+
+  async moveDocumentOrFolder(moveChange: C.FileLevelMoveParams): Cl.FileLevelMoveOrEditResult {
+    const response = await this.changeDocumentsAndFolders([{ action: 'move', ...moveChange }]);
+    if (response._code === 'Ok') return { _code: 'Ok', succeeded: response.results[0] };
+    return response;
+  }
+
+  async editDocumentOrFolder(editChange: C.FileLevelEditParams): Cl.FileLevelMoveOrEditResult {
+    const response = await this.changeDocumentsAndFolders([{ action: 'edit', ...editChange }]);
+    if (response._code === 'Ok') return { _code: 'Ok', succeeded: response.results[0] };
+    return response;
+  }
+
+  async createDocumentOrFolder(createChange: C.FileLevelCreateParams): Cl.FileLevelCreateResult {
+    const response = await this.changeDocumentsAndFolders([{ action: 'create', ...createChange }]);
+    if (response._code === 'Ok') return { _code: 'Ok', created_file_id: response.created[0] };
+    return response;
   }
 
   private requestEndpoint(endpoint: Endpoint.FileList): Promise<R.FileListResponse>;

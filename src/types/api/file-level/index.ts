@@ -1,4 +1,4 @@
-export type Id = string;
+import { Id } from '..';
 
 export declare enum Permission {
   NoAccess = 0,

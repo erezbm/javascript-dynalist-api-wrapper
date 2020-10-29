@@ -7,7 +7,7 @@ it('with valid token should succeed', async () => {
   expect(response.files).toBeDefined();
 });
 
-test('with invalid token should fail with InvalidToken error', async () => {
+it('with invalid token should fail with InvalidToken error', async () => {
   const response = await invalidClient.listDocumentsAndFolders();
   expectToBe(response._code, 'InvalidToken');
 });

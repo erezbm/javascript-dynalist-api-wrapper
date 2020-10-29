@@ -31,8 +31,8 @@ export type FileLevelCreateParams = ChangeType & {
   title?: string;
 };
 
-type FileLevelMoveChange = ChangeAction<'move'> & FileLevelMoveParams;
-type FileLevelEditChange = ChangeAction<'edit'> & FileLevelEditParams;
-type FileLevelCreateChange = ChangeAction<'create'> & FileLevelCreateParams;
+type FileLevelMove = ChangeAction<'move'> & FileLevelMoveParams;
+type FileLevelEdit = ChangeAction<'edit'> & FileLevelEditParams;
+type FileLevelCreate = ChangeAction<'create'> & FileLevelCreateParams;
 
-export type FileLevelChange = FileLevelMoveChange | FileLevelEditChange | FileLevelCreateChange;
+export type FileLevelChange = FileLevelMove | FileLevelEdit | FileLevelCreate;

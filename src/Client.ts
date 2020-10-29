@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import Endpoint from './Endpoint';
 import endpointToUrl from './endpointToUrl';
+import { Id } from './types/api';
 import * as FC from './types/api/file-level/changes';
 import * as P from './types/api/request-parameters';
 import * as R from './types/api/responses';
@@ -30,6 +31,11 @@ export default class Client {
 
   createDocumentOrFolder(createChange: FC.FileLevelCreateParams) {
     return this.changeDocumentOrFolder('create', createChange);
+  }
+
+  /** Fetches the content of a specific document. */
+  readDocument(documentId: Id) {
+    return this.requestEndpoint(Endpoint.DocRead, { file_id: documentId });
   }
 
   // #region Private Helpers

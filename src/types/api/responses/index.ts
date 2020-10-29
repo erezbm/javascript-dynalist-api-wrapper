@@ -1,4 +1,5 @@
 import { Id } from '..';
+import { Node } from '../document-level';
 import { File } from '../file-level';
 import * as P from './parameterized';
 
@@ -16,7 +17,13 @@ export type FileEditResponse = P.ParameterizedFileEditResponse<{
 }>;
 
 export type DocReadResponse = P.ParameterizedDocReadResponse<{
-  // TODO
+  /** The ID of the fetched document. */
+  file_id: Id;
+  /** The title of the fetched document (which is the `content` of the root node). */
+  title: string;
+  /** The version number of the fetched document. */
+  version: number;
+  nodes: Node[];
 }>;
 
 export type DocCheckForUpdatesResponse = P.ParameterizedDocCheckForUpdatesResponse<{

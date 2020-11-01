@@ -1,5 +1,5 @@
 import { Id } from '..';
-import { Node } from '../document-level';
+import { Node, VersionNumber } from '../document-level';
 import { File } from '../file-level';
 import * as P from './parameterized';
 
@@ -22,12 +22,13 @@ export type DocReadResponse = P.ParameterizedDocReadResponse<{
   /** The title of the fetched document (which is the `content` of the root node). */
   title: string;
   /** The version number of the fetched document. */
-  version: number;
+  version: VersionNumber;
   nodes: Node[];
 }>;
 
-export type DocCheckForUpdatesResponse = P.ParameterizedDocCheckForUpdatesResponse<{
-  // TODO
+export type DocCheckForUpdatesResponse<T extends readonly Id[]> = P.ParameterizedDocCheckForUpdatesResponse<{
+  /** The latest version numbers of the documents in the request, excluding any inaccessible or non-existent documents. */
+  versions: Partial<Record<T[number], VersionNumber>>;
 }>;
 
 export type DocEditResponse = P.ParameterizedDocEditResponse<{

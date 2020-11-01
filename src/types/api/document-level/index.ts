@@ -1,5 +1,7 @@
 import { Id } from '..';
 
+export type VersionNumber = number;
+
 export declare enum BackgroundColor {
   Red = 1,
   Orange = 2,

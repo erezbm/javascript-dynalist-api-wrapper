@@ -38,6 +38,20 @@ export default class Client {
     return this.requestEndpoint(Endpoint.DocRead, { file_id: documentId });
   }
 
+  /** Fetches the latest version numbers of specific documents. */
+  fetchDocumentsVersionNumbers<T extends readonly Id[]>(documentIds: T) {
+    return this.requestEndpoint(Endpoint.DocCheckForUpdates, { file_ids: documentIds });
+  }
+
+  /** Fetches the latest version number of a specific document. */
+  async fetchDocumentVersionNumber(documentId: Id): C.FetchDocumentVersionNumberResult {
+    const response = await this.fetchDocumentsVersionNumbers([documentId]);
+    return response._code !== 'Ok' ? response : {
+      _code: 'Ok',
+      version: response.versions[documentId],
+    };
+  }
+
   // #region Private Helpers
   private changeDocumentOrFolder(action: 'move', change: FC.FileLevelMoveParams): C.FileLevelMoveOrEditResult;
   private changeDocumentOrFolder(action: 'edit', change: FC.FileLevelEditParams): C.FileLevelMoveOrEditResult;
@@ -53,7 +67,7 @@ export default class Client {
   private requestEndpoint(endpoint: Endpoint.FileList): Promise<R.FileListResponse>;
   private requestEndpoint(endpoint: Endpoint.FileEdit, parameters: P.FileEditRequestParameters): Promise<R.FileEditResponse>;
   private requestEndpoint(endpoint: Endpoint.DocRead, parameters: P.DocReadRequestParameters): Promise<R.DocReadResponse>;
-  private requestEndpoint(endpoint: Endpoint.DocCheckForUpdates, parameters: P.DocCheckForUpdatesRequestParameters): Promise<R.DocCheckForUpdatesResponse>;
+  private requestEndpoint<T extends readonly Id[]>(endpoint: Endpoint.DocCheckForUpdates, parameters: P.DocCheckForUpdatesRequestParameters<T>): Promise<R.DocCheckForUpdatesResponse<T>>;
   private requestEndpoint(endpoint: Endpoint.DocEdit, parameters: P.DocEditRequestParameters): Promise<R.DocEditResponse>;
   private requestEndpoint(endpoint: Endpoint.InboxAdd, parameters: P.InboxAddRequestParameters): Promise<R.InboxAddResponse>;
   private requestEndpoint(endpoint: Endpoint.Upload, parameters: P.UploadRequestParameters): Promise<R.UploadResponse>;

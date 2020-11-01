@@ -11,8 +11,9 @@ export type DocReadRequestParameters = {
   file_id: Id;
 };
 
-export type DocCheckForUpdatesRequestParameters = {
-  // TODO
+export type DocCheckForUpdatesRequestParameters<T extends readonly Id[]> = {
+  /** Array of the IDs of the documents to fetch the version numbers of. */
+  file_ids: T;
 };
 
 export type DocEditRequestParameters = {

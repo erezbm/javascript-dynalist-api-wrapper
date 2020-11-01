@@ -2,6 +2,7 @@ import fetch from 'cross-fetch';
 import Endpoint from './Endpoint';
 import endpointToUrl from './endpointToUrl';
 import { Id } from './types/api';
+import * as DC from './types/api/document-level/changes';
 import * as FC from './types/api/file-level/changes';
 import * as P from './types/api/request-parameters';
 import * as R from './types/api/responses';
@@ -16,21 +17,21 @@ export default class Client {
     return this.requestEndpoint(Endpoint.FileList);
   }
 
-  /** Changes specific documents and folders. */
+  /** Changes (moves, edits or creates) specific documents and folders. */
   changeDocumentsAndFolders(changes: FC.FileLevelChange[]) {
     return this.requestEndpoint(Endpoint.FileEdit, { changes });
   }
 
-  moveDocumentOrFolder(moveChange: FC.FileLevelMoveParams) {
-    return this.changeDocumentOrFolder('move', moveChange);
+  moveDocumentOrFolder(moveParams: FC.FileLevelMoveParams) {
+    return this.changeDocumentOrFolder('move', moveParams);
   }
 
-  editDocumentOrFolder(editChange: FC.FileLevelEditParams) {
-    return this.changeDocumentOrFolder('edit', editChange);
+  editDocumentOrFolder(editParams: FC.FileLevelEditParams) {
+    return this.changeDocumentOrFolder('edit', editParams);
   }
 
-  createDocumentOrFolder(createChange: FC.FileLevelCreateParams) {
-    return this.changeDocumentOrFolder('create', createChange);
+  createDocumentOrFolder(createParams: FC.FileLevelCreateParams) {
+    return this.changeDocumentOrFolder('create', createParams);
   }
 
   /** Fetches the content of a specific document. */
@@ -52,6 +53,27 @@ export default class Client {
     };
   }
 
+  /** Changes the content (inserts, edits, moves or deletes nodes) of a specific document. */
+  changeDocumentContent(documentId: Id, changes: DC.DocumentLevelChange[]) {
+    return this.requestEndpoint(Endpoint.DocEdit, { file_id: documentId, changes });
+  }
+
+  insertNode(documentId: Id, insertParams: DC.DocumentLevelInsertParams) {
+    return this.makeOneNodeChange(documentId, 'insert', insertParams);
+  }
+
+  editNode(documentId: Id, editParams: DC.DocumentLevelEditParams) {
+    return this.makeOneNodeChange(documentId, 'edit', editParams);
+  }
+
+  moveNode(documentId: Id, moveParams: DC.DocumentLevelMoveParams) {
+    return this.makeOneNodeChange(documentId, 'move', moveParams);
+  }
+
+  deleteNode(documentId: Id, deleteParams: DC.DocumentLevelDeleteParams) {
+    return this.makeOneNodeChange(documentId, 'delete', deleteParams);
+  }
+
   // #region Private Helpers
   private changeDocumentOrFolder(action: 'move', change: FC.FileLevelMoveParams): C.FileLevelMoveOrEditResult;
   private changeDocumentOrFolder(action: 'edit', change: FC.FileLevelEditParams): C.FileLevelMoveOrEditResult;
@@ -61,6 +83,18 @@ export default class Client {
     return response._code !== 'Ok' ? response : {
       _code: 'Ok',
       ...(action !== 'create' ? { succeeded: response.results[0] } : { created_file_id: response.created[0] }),
+    };
+  }
+
+  private makeOneNodeChange(documentId: Id, action: 'insert', change: DC.DocumentLevelInsertParams): C.DocumentLevelInsertResult;
+  private makeOneNodeChange(documentId: Id, action: 'edit', change: DC.DocumentLevelEditParams): C.DocumentLevelChangeEmptyResult;
+  private makeOneNodeChange(documentId: Id, action: 'move', change: DC.DocumentLevelMoveParams): C.DocumentLevelChangeEmptyResult;
+  private makeOneNodeChange(documentId: Id, action: 'delete', change: DC.DocumentLevelDeleteParams): C.DocumentLevelChangeEmptyResult;
+  private async makeOneNodeChange(documentId: Id, action: 'insert' | 'edit' | 'move' | 'delete', change: any): Promise<any> {
+    const response = await this.changeDocumentContent(documentId, [{ action, ...change }]);
+    return response._code !== 'Ok' ? response : {
+      _code: 'Ok',
+      ...(action === 'insert' ? { new_node_it: response.new_node_ids[0] } : {}),
     };
   }
 

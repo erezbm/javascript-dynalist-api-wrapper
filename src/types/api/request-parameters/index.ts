@@ -1,4 +1,5 @@
 import { Id } from '..';
+import { DocumentLevelChange } from '../document-level/changes';
 import { FileLevelChange } from '../file-level/changes';
 
 export type FileEditRequestParameters = {
@@ -17,7 +18,10 @@ export type DocCheckForUpdatesRequestParameters<T extends readonly Id[]> = {
 };
 
 export type DocEditRequestParameters = {
-  // TODO
+  /** The ID of the document to change. */
+  file_id: Id,
+  /** Array of changes to perfrom. */
+  changes: DocumentLevelChange[],
 };
 
 export type InboxAddRequestParameters = {

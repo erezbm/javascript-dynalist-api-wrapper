@@ -32,7 +32,8 @@ export type DocCheckForUpdatesResponse<T extends readonly Id[]> = P.Parameterize
 }>;
 
 export type DocEditResponse = P.ParameterizedDocEditResponse<{
-  // TODO
+  /** Array of the node IDs of the created nodes, in the order they were requested. */
+  new_node_ids: Id[];
 }>;
 
 export type InboxAddResponse = P.ParameterizedInboxAddResponse<{

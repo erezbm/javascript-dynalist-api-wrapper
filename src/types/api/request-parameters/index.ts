@@ -1,11 +1,12 @@
 import { Id } from '..';
+import { PreferenceKey, Preferences } from '../account-level';
 import { BackgroundColor, HeadingLevel } from '../document-level';
 import { DocumentLevelChange } from '../document-level/changes';
 import { FileLevelChange } from '../file-level/changes';
 
 export type FileEditRequestParameters = {
   /** Array of changes to perfrom. */
-  changes: FileLevelChange[];
+  changes: readonly FileLevelChange[];
 };
 
 export type DocReadRequestParameters = {
@@ -22,7 +23,7 @@ export type DocEditRequestParameters = {
   /** The ID of the document to change. */
   file_id: Id,
   /** Array of changes to perfrom. */
-  changes: DocumentLevelChange[],
+  changes: readonly DocumentLevelChange[],
 };
 
 export type InboxAddRequestParameters = {
@@ -43,13 +44,22 @@ export type InboxAddRequestParameters = {
 };
 
 export type UploadRequestParameters = {
-  // TODO
+  /** The name of the file to upload, including extension. */
+  filename: string;
+  /** The mime type of the file, such as "text/plain", "image/jpeg", "application/pdf". */
+  content_type: string;
+  /** The Base64 encoded data. */
+  data: string;
 };
 
-export type PrefGetRequestParameters = {
-  // TODO
+export type PrefGetRequestParameters<PrefKey extends PreferenceKey> = {
+  /** The preference key. */
+  key: PrefKey;
 };
 
-export type PrefSetRequestParameters = {
-  // TODO
+export type PrefSetRequestParameters<PrefKey extends PreferenceKey> = {
+  /** The preference key. */
+  key: PrefKey;
+  /** The preference value to set. */
+  value: Preferences[PrefKey];
 };

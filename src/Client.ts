@@ -2,6 +2,7 @@ import fetch from 'cross-fetch';
 import Endpoint from './Endpoint';
 import endpointToUrl from './endpointToUrl';
 import { Id } from './types/api';
+import { PreferenceKey } from './types/api/account-level';
 import * as DC from './types/api/document-level/changes';
 import * as FC from './types/api/file-level/changes';
 import * as P from './types/api/request-parameters';
@@ -18,7 +19,7 @@ export default class Client {
   }
 
   /** Changes (moves, edits or creates) specific documents and folders. */
-  changeDocumentsAndFolders(changes: FC.FileLevelChange[]) {
+  changeDocumentsAndFolders(changes: readonly FC.FileLevelChange[]) {
     return this.requestEndpoint(Endpoint.FileEdit, { changes });
   }
 
@@ -54,7 +55,7 @@ export default class Client {
   }
 
   /** Changes the content (inserts, edits, moves or deletes nodes) of a specific document. */
-  changeDocumentContent(documentId: Id, changes: DC.DocumentLevelChange[]) {
+  changeDocumentContent(documentId: Id, changes: readonly DC.DocumentLevelChange[]) {
     return this.requestEndpoint(Endpoint.DocEdit, { file_id: documentId, changes });
   }
 
@@ -77,6 +78,21 @@ export default class Client {
   /** Adds a node to your inbox. */
   addToInbox(params: P.InboxAddRequestParameters) {
     return this.requestEndpoint(Endpoint.InboxAdd, params);
+  }
+
+  /** Uploads a file. (Pro only) */
+  uploadFile(params: P.UploadRequestParameters) {
+    return this.requestEndpoint(Endpoint.Upload, params);
+  }
+
+  /** Gets a user preference value. */
+  getPreference<T extends PreferenceKey>(preferenceKey: T) {
+    return this.requestEndpoint(Endpoint.PrefGet, { key: preferenceKey });
+  }
+
+  /** Sets a user preference value. */
+  setPreference<T extends PreferenceKey>(params: P.PrefSetRequestParameters<T>) {
+    return this.requestEndpoint(Endpoint.PrefSet, params);
   }
 
   // #region Private Helpers
@@ -110,8 +126,8 @@ export default class Client {
   private requestEndpoint(endpoint: Endpoint.DocEdit, parameters: P.DocEditRequestParameters): Promise<R.DocEditResponse>;
   private requestEndpoint(endpoint: Endpoint.InboxAdd, parameters: P.InboxAddRequestParameters): Promise<R.InboxAddResponse>;
   private requestEndpoint(endpoint: Endpoint.Upload, parameters: P.UploadRequestParameters): Promise<R.UploadResponse>;
-  private requestEndpoint(endpoint: Endpoint.PrefGet, parameters: P.PrefGetRequestParameters): Promise<R.PrefGetResponse>;
-  private requestEndpoint(endpoint: Endpoint.PrefSet, parameters: P.PrefSetRequestParameters): Promise<R.PrefSetResponse>;
+  private requestEndpoint<T extends PreferenceKey>(endpoint: Endpoint.PrefGet, parameters: P.PrefGetRequestParameters<T>): Promise<R.PrefGetResponse<T>>;
+  private requestEndpoint<T extends PreferenceKey>(endpoint: Endpoint.PrefSet, parameters: P.PrefSetRequestParameters<T>): Promise<R.PrefSetResponse>;
   private async requestEndpoint(endpoint: Endpoint, parameters?: object) {
     const response = await fetch(endpointToUrl[endpoint].href, {
       method: 'POST',

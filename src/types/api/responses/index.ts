@@ -1,4 +1,5 @@
 import { Id } from '..';
+import { PreferenceKey, Preferences } from '../account-level';
 import { Node, VersionNumber } from '../document-level';
 import { File } from '../file-level';
 import * as P from './parameterized';
@@ -46,13 +47,15 @@ export type InboxAddResponse = P.ParameterizedInboxAddResponse<{
 }>;
 
 export type UploadResponse = P.ParameterizedUploadResponse<{
-  // TODO
+  /** The url of the uploaded file. */
+  url: string;
 }>;
 
-export type PrefGetResponse = P.ParameterizedPrefGetResponse<{
-  // TODO
+export type PrefGetResponse<PrefKey extends PreferenceKey> = P.ParameterizedPrefGetResponse<{
+  /** The preference key in the request. */
+  key: PrefKey;
+  /** The value of the preference. */
+  value: Preferences[PrefKey];
 }>;
 
-export type PrefSetResponse = P.ParameterizedPrefSetResponse<{
-  // TODO
-}>;
+export type PrefSetResponse = P.ParameterizedPrefSetResponse<{}>;

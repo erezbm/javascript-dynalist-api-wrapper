@@ -37,7 +37,12 @@ export type DocEditResponse = P.ParameterizedDocEditResponse<{
 }>;
 
 export type InboxAddResponse = P.ParameterizedInboxAddResponse<{
-  // TODO
+  /** The ID of the document the inbox is in. */
+  file_id: Id,
+  /** The ID of the new node. */
+  node_id: Id,
+  /** The zero-indexed position the new node was placed in the inbox. */
+  index: number,
 }>;
 
 export type UploadResponse = P.ParameterizedUploadResponse<{

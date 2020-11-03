@@ -74,6 +74,11 @@ export default class Client {
     return this.makeOneNodeChange(documentId, 'delete', deleteParams);
   }
 
+  /** Adds a node to your inbox. */
+  addToInbox(params: P.InboxAddRequestParameters) {
+    return this.requestEndpoint(Endpoint.InboxAdd, params);
+  }
+
   // #region Private Helpers
   private changeDocumentOrFolder(action: 'move', change: FC.FileLevelMoveParams): C.FileLevelMoveOrEditResult;
   private changeDocumentOrFolder(action: 'edit', change: FC.FileLevelEditParams): C.FileLevelMoveOrEditResult;

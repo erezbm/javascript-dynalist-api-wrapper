@@ -1,4 +1,5 @@
 import { Id } from '..';
+import { BackgroundColor, HeadingLevel } from '../document-level';
 import { DocumentLevelChange } from '../document-level/changes';
 import { FileLevelChange } from '../file-level/changes';
 
@@ -25,7 +26,20 @@ export type DocEditRequestParameters = {
 };
 
 export type InboxAddRequestParameters = {
-  // TODO
+  /** The zero-indexed position the node should be in the inbox, supply -1 to place it at the end, if not given the user setting will be used. */
+  index?: number;
+  /** The new node's content. */
+  content?: string;
+  /** The new node's note. */
+  note?: string;
+  /** Whether the new node should be checked off. */
+  checked?: boolean;
+  /** Whether the new node should have a checkbox. */
+  checkbox?: boolean;
+  /** The new node's heading level. */
+  heading?: HeadingLevel;
+  /** The new node's background color. */
+  color?: BackgroundColor;
 };
 
 export type UploadRequestParameters = {

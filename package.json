@@ -1,5 +1,5 @@
 {
-  "name": "dynalist.js",
+  "name": "@erezbm/dynalist.js",
   "version": "1.0.0",
   "description": "A JavaScript Dynalist API wrapper",
   "main": "dist/node/index.cjs.js",

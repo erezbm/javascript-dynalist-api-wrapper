@@ -8,25 +8,25 @@ A JavaScript Dynalist API wrapper.
 npm install dynalist.js
 ```
 ```js
-const Dynalist = require('dynalist.js');
+const Dynalist = require('@erezbm/dynalist.js');
 const client = new Dynalist.Client('<a valid dynalist api token>');
 ```
 OR if you are using ES Modules
 ```js
-import { Client } from 'dynalist.js';
+import { Client } from '@erezbm/dynalist.js';
 const client = new Client('<a valid dynalist api token>');
 ```
 
 ### Browser
 ```html
-<script src="https://unpkg.com/dynalist.js"></script>
+<script src="https://unpkg.com/@erezbm/dynalist.js"></script>
 <script>
   const client = new Dynalist.Client('<a valid dynalist api token>');
 </script>
 ```
 OR
 ```js
-import { Client } from 'https://unpkg.com/dynalist.js/dist/browser/index.esm.js';
+import { Client } from 'https://unpkg.com/@erezbm/dynalist.js/dist/browser/index.esm.js';
 
 const client = new Client('<a valid dynalist api token>');
 ```

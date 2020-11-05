@@ -1,13 +1,14 @@
-import fetch from 'cross-fetch';
+import 'cross-fetch/polyfill';
 import Endpoint from './Endpoint';
 import endpointToUrl from './endpointToUrl';
-import { Id } from './types/api';
-import { PreferenceKey } from './types/api/account-level';
-import * as DC from './types/api/document-level/changes';
-import * as FC from './types/api/file-level/changes';
-import * as P from './types/api/request-parameters';
-import * as R from './types/api/responses';
-import * as C from './types/client';
+import { Id } from './api-types';
+import { PreferenceKey } from './api-types/account-level';
+import { VersionNumber } from './api-types/document-level';
+import * as DC from './api-types/document-level/changes';
+import * as FC from './api-types/file-level/changes';
+import * as P from './api-types/request-parameters';
+import * as R from './api-types/responses';
+import * as PR from './api-types/responses/parameterized';
 
 export default class Client {
   /** @param token Your API secret token. */
@@ -46,7 +47,7 @@ export default class Client {
   }
 
   /** Fetches the latest version number of a specific document. */
-  async fetchDocumentVersionNumber(documentId: Id): C.FetchDocumentVersionNumberResult {
+  async fetchDocumentVersionNumber(documentId: Id): FetchDocumentVersionNumberResult {
     const response = await this.fetchDocumentsVersionNumbers([documentId]);
     return response._code !== 'Ok' ? response : {
       _code: 'Ok',
@@ -96,9 +97,9 @@ export default class Client {
   }
 
   // #region Private Helpers
-  private changeDocumentOrFolder(action: 'move', change: FC.FileLevelMoveParams): C.FileLevelMoveOrEditResult;
-  private changeDocumentOrFolder(action: 'edit', change: FC.FileLevelEditParams): C.FileLevelMoveOrEditResult;
-  private changeDocumentOrFolder(action: 'create', change: FC.FileLevelCreateParams): C.FileLevelCreateResult;
+  private changeDocumentOrFolder(action: 'move', change: FC.FileLevelMoveParams): FileLevelMoveOrEditResult;
+  private changeDocumentOrFolder(action: 'edit', change: FC.FileLevelEditParams): FileLevelMoveOrEditResult;
+  private changeDocumentOrFolder(action: 'create', change: FC.FileLevelCreateParams): FileLevelCreateResult;
   private async changeDocumentOrFolder(action: 'move' | 'edit' | 'create', change: any): Promise<any> {
     const response = await this.changeDocumentsAndFolders([{ action, ...change }]);
     return response._code !== 'Ok' ? response : {
@@ -107,10 +108,10 @@ export default class Client {
     };
   }
 
-  private makeOneNodeChange(documentId: Id, action: 'insert', change: DC.DocumentLevelInsertParams): C.DocumentLevelInsertResult;
-  private makeOneNodeChange(documentId: Id, action: 'edit', change: DC.DocumentLevelEditParams): C.DocumentLevelChangeEmptyResult;
-  private makeOneNodeChange(documentId: Id, action: 'move', change: DC.DocumentLevelMoveParams): C.DocumentLevelChangeEmptyResult;
-  private makeOneNodeChange(documentId: Id, action: 'delete', change: DC.DocumentLevelDeleteParams): C.DocumentLevelChangeEmptyResult;
+  private makeOneNodeChange(documentId: Id, action: 'insert', change: DC.DocumentLevelInsertParams): DocumentLevelInsertResult;
+  private makeOneNodeChange(documentId: Id, action: 'edit', change: DC.DocumentLevelEditParams): DocumentLevelChangeEmptyResult;
+  private makeOneNodeChange(documentId: Id, action: 'move', change: DC.DocumentLevelMoveParams): DocumentLevelChangeEmptyResult;
+  private makeOneNodeChange(documentId: Id, action: 'delete', change: DC.DocumentLevelDeleteParams): DocumentLevelChangeEmptyResult;
   private async makeOneNodeChange(documentId: Id, action: 'insert' | 'edit' | 'move' | 'delete', change: any): Promise<any> {
     const response = await this.changeDocumentContent(documentId, [{ action, ...change }]);
     return response._code !== 'Ok' ? response : {
@@ -141,3 +142,9 @@ export default class Client {
   }
   // #endregion Private Helpers
 }
+
+type FileLevelMoveOrEditResult = Promise<PR.ParameterizedFileEditResponse<{ succeeded: boolean; }>>;
+type FileLevelCreateResult = Promise<PR.ParameterizedFileEditResponse<{ created_file_id?: Id; }>>;
+type FetchDocumentVersionNumberResult = Promise<PR.ParameterizedDocCheckForUpdatesResponse<{ version?: VersionNumber; }>>;
+type DocumentLevelInsertResult = Promise<PR.ParameterizedDocEditResponse<{ new_node_id: Id; }>>;
+type DocumentLevelChangeEmptyResult = Promise<PR.ParameterizedDocEditResponse<{}>>;

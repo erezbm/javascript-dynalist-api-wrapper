@@ -5,7 +5,7 @@ A JavaScript Dynalist API wrapper.
 
 ### Node
 ```sh
-npm install dynalist.js
+npm install @erezbm/dynalist.js
 ```
 ```js
 const Dynalist = require('@erezbm/dynalist.js');

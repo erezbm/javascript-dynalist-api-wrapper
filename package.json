@@ -1,6 +1,6 @@
 {
-  "name": "@erezbm/dynalist.js",
-  "version": "1.0.1",
+  "name": "dynalist-api-wrapper",
+  "version": "1.0.0",
   "description": "A JavaScript Dynalist API wrapper",
   "main": "dist/node/index.cjs.js",
   "types": "dist/types/index.d.ts",
@@ -17,10 +17,10 @@
   ],
   "author": "Erez Ben Moshe",
   "license": "MIT",
-  "homepage": "https://github.com/erezbm/dynalist.js#readme",
+  "homepage": "https://github.com/erezbm/javascript-dynalist-api-wrapper#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/erezbm/dynalist.js.git"
+    "url": "git+https://github.com/erezbm/javascript-dynalist-api-wrapper.git"
   },
   "dependencies": {
     "cross-fetch": "^3.0.6"

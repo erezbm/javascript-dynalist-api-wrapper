@@ -4,7 +4,8 @@ A JavaScript Dynalist API wrapper.
 ## Installation
 
 ### Node
-Run `npm install dynalist-api-wrapper`. Then load the package:  
+Run `npm install dynalist-api-wrapper`, then load the package:
+
 CommonJS:
 ```js
 const Dynalist = require('dynalist-api-wrapper');

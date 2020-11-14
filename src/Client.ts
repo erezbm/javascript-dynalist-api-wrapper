@@ -1,6 +1,6 @@
 import 'cross-fetch/polyfill';
-import Endpoint from './Endpoint';
-import endpointToUrl from './endpointToUrl';
+import Endpoint from './endpoint';
+import endpointToUrl from './endpoint-to-url';
 import { Id } from './api-types';
 import { PreferenceKey } from './api-types/account-level';
 import { VersionNumber } from './api-types/document-level';

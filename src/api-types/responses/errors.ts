@@ -1,4 +1,4 @@
-import ResponseCode from './ResponseCode';
+import ResponseCode from './response-code';
 
 type ErrorResponse<T> = ResponseCode<T> & { _msg?: string; };
 

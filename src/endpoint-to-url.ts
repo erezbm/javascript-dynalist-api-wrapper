@@ -1,4 +1,4 @@
-import Endpoint from './Endpoint';
+import Endpoint from './endpoint';
 
 const API_URL = new URL('https://dynalist.io/api/v1/');
 

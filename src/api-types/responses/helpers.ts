@@ -1,5 +1,5 @@
 import * as E from './errors';
-import ResponseCode from './ResponseCode';
+import ResponseCode from './response-code';
 
 type SuccessResponse<T> = ResponseCode<'Ok'> & T;
 

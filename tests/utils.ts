@@ -14,3 +14,8 @@ export function expectToBe<T extends Narrowable, U extends T>(
 ): asserts actual is U {
   expect(actual).toBe(expected);
 }
+
+export const validDocumentId = 'ZYvRKBhl2xUTAkhUOpcLfwz7';
+export const firstRootDocumentId = validDocumentId;
+export const content = '[From Unit Test] Content here';
+export const title = '[From Unit Test] Title here';

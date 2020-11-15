@@ -25,7 +25,7 @@ export type DocumentLevelEditParams = {
   /** The ID of the node to edit. */
   node_id: Id;
   /** The new content. */
-  content: string;
+  content?: string;
   /** The new note. */
   note?: string;
   /** Whether the node should be checked off. */

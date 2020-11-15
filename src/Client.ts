@@ -116,7 +116,7 @@ export default class Client {
     const response = await this.changeDocumentContent(documentId, [{ action, ...change }]);
     return response._code !== 'Ok' ? response : {
       _code: 'Ok',
-      ...(action === 'insert' ? { new_node_it: response.new_node_ids[0] } : {}),
+      ...(action === 'insert' ? { new_node_id: response.new_node_ids[0] } : {}),
     };
   }
 

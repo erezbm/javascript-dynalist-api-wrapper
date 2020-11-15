@@ -1,6 +1,6 @@
 {
   "name": "dynalist-api-wrapper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A JavaScript Dynalist API wrapper",
   "main": "dist/node/index.cjs.js",
   "types": "dist/types/index.d.ts",

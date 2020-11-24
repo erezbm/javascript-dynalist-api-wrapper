@@ -53,7 +53,8 @@
     "rules": {
       "max-len": "off",
       "no-underscore-dangle": "off",
-      "object-curly-newline": "off"
+      "object-curly-newline": "off",
+      "@typescript-eslint/no-use-before-define": "off"
     }
   },
   "jest": {

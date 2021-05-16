@@ -1,5 +1,5 @@
 # dynalist-api-wrapper
-A JavaScript Dynalist API wrapper.
+A JavaScript [Dynalist](https://dynalist.io) [API](https://apidocs.dynalist.io) wrapper.
 
 ## Installation
 

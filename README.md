@@ -1,5 +1,9 @@
-# dynalist-api-wrapper
+# DEPRECIATED: dynalist-api-wrapper
 A JavaScript [Dynalist](https://dynalist.io) [API](https://apidocs.dynalist.io) wrapper.
+
+## WARNING
+This library is no longer maintained.  
+This library supports the Dynalist API version from November 2020 (it might still be fine to use for things that have not changed since then).
 
 ## Installation
 
